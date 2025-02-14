@@ -1,22 +1,18 @@
 const express = require('express')
 const router = express.Router()
-// controller
+const todosController = require('../controllers/todosController.js')
 
 
 // Index
-router.get('/')
-
-// Show
-router.get('/:id',)
+router.get('/', todosController.index)
 
 // Store
-router.post('/')
+router.post('/', todosController.store)
 
-// Update
-
-// Modify
+// Update (modificare l'intera risorsa => title)
+router.put('/:id', todosController.update)
 
 // Destroy
-router.delete('/:id',)
+router.delete('/:id', todosController.destroy)
 
 module.exports = router
