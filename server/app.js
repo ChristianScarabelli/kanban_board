@@ -9,7 +9,6 @@ const notFound = require('./middlewares/notFound.js')
 const trimStrings = require('./middlewares/trimStrings.js')
 
 const todosRouter = require('./routers/todosRouter.js')
-const tasksRouter = require('./routers/tasksRouter.js')
 
 
 // Uso i middlewares generali
@@ -25,7 +24,7 @@ app.get('/', (req, res) => {
 })
 
 // Rotta todos
-app.use('/todos', todosRouter, tasksRouter)
+app.use('/todos', todosRouter)
 
 app.use(errorsHandler)
 app.use(notFound)
