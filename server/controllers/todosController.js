@@ -17,17 +17,7 @@ function index(req, res) {
 function store(req, res) {
     const { title } = req.body
 
-    // Validazione
-    let error = []
-
-    if (!title || typeof title !== 'string' || title.length > 255) {
-        error.push('Title must be a string of max 255 characters')
-    }
-
-    if (error.length > 0) {
-        return res.status(400).json({ error: error })
-    }
-
+    // validazione
 
     const sql = `INSERT INTO todos (title) VALUES (?)`
 
@@ -42,22 +32,6 @@ function update(req, res) {
     const id = req.params.id
     const { title } = req.body
 
-
-    // Validazione
-    let error = []
-
-    if (isNaN(parseInt(id))) {
-        error.push('Invalid id')
-    }
-
-    if (!title || typeof title !== 'string' || title.length > 255) {
-        error.push('Title must be a string of max 255 characters')
-    }
-
-    if (error.length > 0) {
-        return res.status(400).json({ error: error })
-    }
-
     const sql = `UPDATE todos SET title = ? WHERE id = ?`
 
     connection.query(sql, [title, id], (err, result) => {
@@ -70,10 +44,6 @@ function update(req, res) {
 // Destroy (To Do table)
 function destroy(req, res) {
     const id = req.params.id
-
-    if (isNaN(id)) {
-        return res.status(400).json({ error: 'Invalid id' })
-    }
 
     const sql = `DELETE FROM todos WHERE id = ?`
 

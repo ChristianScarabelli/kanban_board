@@ -65,6 +65,7 @@ function update(req, res) {
     }
 
     const sql = `UPDATE tasks SET description = ?, priority = ?, completed = ? WHERE id = ? AND todo_id = ?`
+
     connection.query(sql, [description, priority, completed, id, todo_id], (err, results) => {
         if (err) return res.status(500).json({ error: err.message })
         if (results.affectedRows === 0) return res.status(404).json({ error: 'Resource not found' })
