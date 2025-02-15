@@ -1,3 +1,4 @@
+import Footer from './components/Footer.jsx'
 import Header from './components/Header.jsx'
 
 function App() {
@@ -5,7 +6,13 @@ function App() {
 
   return (
     <>
-      <Header />
+      <section className='flex flex-col bg-gradient-to-br from-[#0f172a] via-[#3b82f6] to-[#ec4899] w-screen h-screen'>
+        <Header />
+        <section className='flex-grow'>
+
+        </section>
+        <Footer />
+      </section>
     </>
   )
 }
