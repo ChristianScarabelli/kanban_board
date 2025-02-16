@@ -2,16 +2,47 @@ const connection = require('../data/db.js')
 
 // Index
 function index(req, res) {
-    const sql = `SELECT todos.*, tasks.*
-                FROM todos
-                LEFT JOIN tasks ON todos.id = tasks.todo_id
-                ORDER BY todos.id, tasks.added_at ASC`
+    const sql = `
+        SELECT 
+            t.id, 
+            t.title, 
+            t.created_at,
+            COALESCE(tasks_json.tasks, '[]') AS tasks
+        FROM todos AS t
+        LEFT JOIN (
+            SELECT 
+                ordered_tasks.todo_id,
+                JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        'id', ordered_tasks.id,
+                        'description', ordered_tasks.description,
+                        'priority', ordered_tasks.priority,
+                        'completed', ordered_tasks.completed,
+                        'added_at', ordered_tasks.added_at
+                    )
+                ) AS tasks
+            FROM (
+                SELECT * FROM tasks ORDER BY added_at  
+            ) AS ordered_tasks
+            GROUP BY ordered_tasks.todo_id
+        ) tasks_json ON t.id = tasks_json.todo_id
+        ORDER BY t.id;
+    `;
 
     connection.query(sql, (err, results) => {
-        if (err) return res.status(500).json({ error: err.message })
-        res.json(results)
-    })
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        } else {
+            // Converte il JSON in array prima di inviarlo al frontend
+            const todos = results.map(todo => ({
+                ...todo,
+                tasks: JSON.parse(todo.tasks)
+            }));
+            res.json(todos);
+        }
+    });
 }
+
 
 // Store
 function store(req, res) {

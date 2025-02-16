@@ -1,13 +1,12 @@
 import AddButton from "./ui/AddButton";
 import ModifyButton from "./ui/ModifyButton";
 import DeleteButton from "./ui/DeleteButton";
+import TaskCard from "./TaskCard";
 
-import { useState } from "react";
+import { useState, useContext } from "react";
+import DotsMenu from "./ui/DotsMenu.jsx";
 
-
-export default function TodoCard() {
-
-    const [inHover, setInHover] = useState(false)
+export default function TodoCard({ todo }) {
 
     return (
         <section>
@@ -15,17 +14,15 @@ export default function TodoCard() {
                 onMouseEnter={() => setInHover(true)}
                 onMouseLeave={() => setInHover(false)}
             >
-                <h2>To do title</h2>
-                {
-                    inHover &&
-                    <>
-                        <ModifyButton />
-                        <AddButton />
-                        <DeleteButton />
-                    </>
-                }
+                <h2>{todo.title}</h2>
+                <DotsMenu />
 
+                <section className="flex flex-col justify-start gap-3">
+                    {todo.tasks && todo.tasks.map(task => (
+                        <TaskCard key={task.id} task={task} />
+                    ))}
+                </section>
             </div>
         </section>
-    )
+    );
 }
