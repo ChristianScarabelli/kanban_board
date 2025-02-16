@@ -11,7 +11,7 @@ function App() {
     <GlobalProvider>
       <section className='flex flex-col bg-gradient-to-br from-[#0f172a] via-[#3b82f6] to-[#ec4899] w-screen h-screen'>
         <Header />
-        <section className='flex-grow'>
+        <section className='flex flex-grow overflow-hidden'>
           <Main />
         </section>
         <Footer />

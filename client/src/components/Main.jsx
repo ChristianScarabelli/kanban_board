@@ -22,10 +22,12 @@ export default function Main() {
     }, []);
 
     return (
-        <main className="container mx-auto grid grid-cols-4 gap-5 mt-10">
-            {todos && todos.map(todo => (
-                <TodoCard key={todo.id} todo={todo} />
-            ))}
+        <main className="container mx-auto flex flex-col justify-center h-full overflow-x-auto overflow-y-hidden p-5">
+            <div className="grid grid-flow-col auto-cols-max gap-5 my-auto">
+                {todos && todos.map(todo => (
+                    <TodoCard key={todo.id} todo={todo} />
+                ))}
+            </div>
         </main>
     );
 }

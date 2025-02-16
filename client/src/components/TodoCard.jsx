@@ -9,7 +9,7 @@ import DotsMenu from "./ui/DotsMenu.jsx";
 export default function TodoCard({ todo }) {
 
     return (
-        <section>
+        <section className="w-64">
             <div className="flex flex-col justify-start p-3 rounded-lg bg-gray-800 text-gray-400"
                 onMouseEnter={() => setInHover(true)}
                 onMouseLeave={() => setInHover(false)}
@@ -17,7 +17,7 @@ export default function TodoCard({ todo }) {
                 <h2>{todo.title}</h2>
                 <DotsMenu />
 
-                <section className="flex flex-col justify-start gap-3">
+                <section className="flex flex-col justify-start gap-3 overflow-y-auto max-h-110">
                     {todo.tasks && todo.tasks.map(task => (
                         <TaskCard key={task.id} task={task} />
                     ))}
