@@ -1,11 +1,13 @@
-import { PlusIcon } from "@heroicons/react/20/solid"
+import { PlusIcon } from "@heroicons/react/20/solid";
 
 export default function AddButton({ onClick }) {
     return (
-        <section>
-            <button onClick={onClick} className="flex items-center justify-center p-3 rounded-lg bg-gray-400 text-gray-200 hover:bg-blue-500">
-                <PlusIcon className="h-5 w-5" />
-            </button>
-        </section>
-    )
+        <button
+            onClick={onClick}
+            className="w-full flex items-center justify-start gap-2 p-3 rounded-lg text-gray-200 hover:bg-gray-600 hover:opacity-80"
+        >
+            <PlusIcon className="h-5 w-5" />
+            <span className="text-sm font-medium">Add Task</span>
+        </button>
+    );
 }

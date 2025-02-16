@@ -1,10 +1,10 @@
-import AddButton from "./ui/AddButton";
-import ModifyButton from "./ui/ModifyButton";
-import DeleteButton from "./ui/DeleteButton";
-import TaskCard from "./TaskCard";
-
 import { useState, useContext } from "react";
-import DotsMenu from "./ui/DotsMenu.jsx";
+
+// Components
+import AddButton from "./ui/AddButton";
+import TaskCard from "./TaskCard";
+import DotsMenu from "./ui/DotsMenu";
+
 
 export default function TodoCard({ todo }) {
 
@@ -14,14 +14,18 @@ export default function TodoCard({ todo }) {
                 onMouseEnter={() => setInHover(true)}
                 onMouseLeave={() => setInHover(false)}
             >
-                <h2>{todo.title}</h2>
-                <DotsMenu />
-
+                <div className="flex justify-between items-center mb-3">
+                    <h2>{todo.title}</h2>
+                    <DotsMenu />
+                </div>
                 <section className="flex flex-col justify-start gap-3 overflow-y-auto max-h-110">
                     {todo.tasks && todo.tasks.map(task => (
                         <TaskCard key={task.id} task={task} />
                     ))}
                 </section>
+                <div className="mt-3">
+                    <AddButton />
+                </div>
             </div>
         </section>
     );
