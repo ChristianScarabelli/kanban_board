@@ -5,7 +5,7 @@ import AddButton from "./ui/AddButton";
 import TaskCard from "./TaskCard";
 import DotsMenu from "./ui/DotsMenu";
 
-export default function TodoCard({ todo }) {
+export default function TodoCard({ todo, onAdd }) {
     return (
         <section className="min-w-[16rem] max-w-[20rem]">
             <div className="flex flex-col justify-start p-3 rounded-lg bg-gray-800 text-gray-400">
@@ -19,6 +19,7 @@ export default function TodoCard({ todo }) {
                     ))}
                 </section>
                 <div className="mt-3">
+                    {/* onAdd={funzione per aggiungere task }  */}
                     <AddButton data='Task' />
                 </div>
             </div>
