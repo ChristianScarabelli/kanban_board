@@ -16,7 +16,7 @@ export default function TodoCard({ todo }) {
             >
                 <div className="flex justify-between items-center mb-3">
                     <h2>{todo.title}</h2>
-                    <DotsMenu />
+                    <DotsMenu className='text-gray-200 hover:bg-gray-600 hover:opacity-80' />
                 </div>
                 <section className="flex flex-col justify-start gap-3 overflow-y-auto max-h-110">
                     {todo.tasks && todo.tasks.map(task => (
@@ -24,7 +24,7 @@ export default function TodoCard({ todo }) {
                     ))}
                 </section>
                 <div className="mt-3">
-                    <AddButton />
+                    <AddButton data='Task' />
                 </div>
             </div>
         </section>

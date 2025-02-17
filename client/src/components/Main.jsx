@@ -26,7 +26,7 @@ export default function Main() {
         <main className="container mx-auto flex flex-col justify-center h-full overflow-x-auto overflow-y-hidden p-5">
             <div className="grid grid-flow-col auto-cols-max gap-5 my-auto">
                 <div className="self-start rounded-lg bg-gray-600 opacity-80 hover:bg-gray-100 hover:text-gray-300">
-                    <AddButton />
+                    <AddButton data='Column' />
                 </div>
                 {todos && todos.map(todo => (
                     <TodoCard key={todo.id} todo={todo} />

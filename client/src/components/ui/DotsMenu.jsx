@@ -3,12 +3,13 @@ import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import ModifyButton from './ModifyButton.jsx'
 import DeleteButton from './DeleteButton.jsx'
 
-export default function DotsMenu({ onClick }) {
+export default function DotsMenu({ onClick, className }) {
+
     return (
         <section>
             <Menu>
                 <MenuButton>
-                    <button onClick={onClick} className="cursor-pointer flex items-center justify-center rounded-lg p-2 text-gray-200 hover:bg-gray-600 hover:opacity-80">
+                    <button onClick={onClick} className={`${className} cursor-pointer flex items-center justify-center rounded-lg p-2`}>
                         <DotsIcon className="h-5 w-5 " />
                     </button>
                 </MenuButton>
