@@ -40,7 +40,7 @@ export default function TaskCard({ task, id }) {
 
         >
             <div className={`flex justify-end items-center px-3 py-1 ${priorityColor} rounded-t-lg`}>
-                <DotsMenu className='text-gray-700 hover:bg-gray-600 hover:opacity-30 hover:text-white' />
+                <DotsMenu className='text-gray-700 hover:bg-gray-600 hover:opacity-60 hover:text-white' />
             </div>
             <div className='p-3 flex gap-2 items-center'
                 onMouseEnter={() => {
