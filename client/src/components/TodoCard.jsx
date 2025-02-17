@@ -10,17 +10,14 @@ export default function TodoCard({ todo }) {
 
     return (
         <section className="w-64">
-            <div className="flex flex-col justify-start p-3 rounded-lg bg-gray-800 text-gray-400"
-                onMouseEnter={() => setInHover(true)}
-                onMouseLeave={() => setInHover(false)}
-            >
+            <div className="flex flex-col justify-start p-3 rounded-lg bg-gray-800 text-gray-400">
                 <div className="flex justify-between items-center mb-3">
                     <h2>{todo.title}</h2>
                     <DotsMenu className='text-gray-200 hover:bg-gray-600 hover:opacity-80' />
                 </div>
                 <section className="flex flex-col justify-start gap-3 overflow-y-auto max-h-110">
                     {todo.tasks && todo.tasks.map(task => (
-                        <TaskCard key={task.id} task={task} />
+                        <TaskCard key={task.id} task={task} id={task.id} />
                     ))}
                 </section>
                 <div className="mt-3">

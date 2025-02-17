@@ -11,9 +11,12 @@ function GlobalProvider({ children }) {
     // Spinner
     const [isLoading, setIsLoading] = useState(false)
 
+    // Classi animazione
+    const [animationClass, setAnimationClass] = useState('');
+
 
     return (
-        <GlobalContext.Provider value={{ inHover, setInHover }}>
+        <GlobalContext.Provider value={{ inHover, setInHover, animationClass, setAnimationClass }}>
             {children}
         </GlobalContext.Provider>
     )
