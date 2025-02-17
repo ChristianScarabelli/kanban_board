@@ -5,11 +5,9 @@ import AddButton from "./ui/AddButton";
 import TaskCard from "./TaskCard";
 import DotsMenu from "./ui/DotsMenu";
 
-
 export default function TodoCard({ todo }) {
-
     return (
-        <section className="w-64">
+        <section className="min-w-[16rem] max-w-[20rem]">
             <div className="flex flex-col justify-start p-3 rounded-lg bg-gray-800 text-gray-400">
                 <div className="flex justify-between items-center mb-3">
                     <h2>{todo.title}</h2>
