@@ -23,7 +23,7 @@ export default function RadioButton({ checked, id, className }) {
                         align="center"
                         className="bg-gray-700 text-white px-2 py-1 rounded-lg text-sm shadow-lg z-50"
                     >
-                        Completa
+                        Complete
                         <Tooltip.Arrow className="fill-gray-700" />
                     </Tooltip.Content>
                 </Tooltip.Portal>

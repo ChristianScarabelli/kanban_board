@@ -20,7 +20,7 @@ export default function DeleteButton({ onClick }) {
                         align="center"
                         className="bg-gray-700 text-white px-2 py-1 rounded-lg text-sm shadow-lg animate-fade-in z-50"
                     >
-                        Elimina
+                        Delete
                         <Tooltip.Arrow className="fill-gray-700" />
                     </Tooltip.Content>
                 </Tooltip.Portal>

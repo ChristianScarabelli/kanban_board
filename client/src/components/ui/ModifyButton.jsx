@@ -20,7 +20,7 @@ export default function ModifyButton({ onClick }) {
                         align="center"
                         className="bg-gray-700 text-white px-2 py-1 rounded-lg text-sm shadow-lg z-50"
                     >
-                        Modifica
+                        Modify
                         <Tooltip.Arrow className="fill-gray-700" />
                     </Tooltip.Content>
                 </Tooltip.Portal>

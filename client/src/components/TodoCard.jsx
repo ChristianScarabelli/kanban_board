@@ -7,8 +7,8 @@ import DotsMenu from "./ui/DotsMenu";
 
 export default function TodoCard({ todo, onAdd }) {
     return (
-        <section className="min-w-[16rem] max-w-[20rem]">
-            <div className="flex flex-col justify-start p-3 rounded-lg bg-gray-800 text-gray-400">
+        <section className="w-72">
+            <div className="flex flex-col justify-start p-3 rounded-lg bg-gray-800 text-gray-400 max-h-140 overflow-y-auto">
                 <div className="flex justify-between items-center mb-3">
                     <h2>{todo.title}</h2>
                     <DotsMenu className='text-gray-200 hover:bg-gray-600 hover:opacity-80' />
