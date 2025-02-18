@@ -5,6 +5,9 @@ function store(req, res) {
     const { todo_id } = req.params
     const { description, priority, completed } = req.body
 
+    console.log("Received data:", { todo_id, description, priority, completed })
+
+
     // Validazione
     let error = []
 
@@ -16,11 +19,12 @@ function store(req, res) {
         error.push('Description must be a string of max 255 characters')
     }
 
-    if (typeof priority !== 'number' || priority < 1 || priority > 3) {
+    // se è diverso da undefined (definito), e diverso da null, allora ...
+    if (priority !== undefined && priority !== null && (typeof priority !== 'number' || priority < 1 || priority > 3)) {
         error.push('Priority must be a number between 1 and 3')
     }
 
-    if (typeof completed !== 'boolean') {
+    if (completed !== undefined && typeof completed !== 'boolean') {
         error.push('Completed must be a boolean, 0 or 1')
     }
 

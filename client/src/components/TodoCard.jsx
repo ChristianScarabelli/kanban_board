@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 
 // Components
-import AddButton from "./ui/AddButton";
+import AddTaskButton from "./ui/AddTaskButton";
 import TaskCard from "./TaskCard";
 import DotsMenu from "./ui/DotsMenu";
 
@@ -20,7 +20,7 @@ export default function TodoCard({ todo, onAdd }) {
                 </section>
                 <div className="mt-3">
                     {/* onAdd={funzione per aggiungere task }  */}
-                    <AddButton data='Task' />
+                    <AddTaskButton columnId={todo.id} onAdd={onAdd} />
                 </div>
             </div>
         </section>

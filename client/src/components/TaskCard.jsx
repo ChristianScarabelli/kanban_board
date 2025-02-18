@@ -21,11 +21,11 @@ export default function TaskCard({ task, id }) {
 
         switch (priority) {
             case 1:
-                return 'bg-green-600';
+                return 'bg-red-600';
             case 2:
                 return 'bg-orange-400';
             case 3:
-                return 'bg-red-600';
+                return 'bg-green-600';
             default:
                 return 'bg-gray-200';
         }
@@ -40,7 +40,7 @@ export default function TaskCard({ task, id }) {
 
         >
             <div className={`flex justify-end items-center px-3 py-1 ${priorityColor} rounded-t-lg`}>
-                <DotsMenu className='text-gray-700 hover:bg-gray-600 hover:opacity-60 hover:text-white' />
+                <DotsMenu className='text-gray-900 hover:bg-gray-600 hover:opacity-60 hover:text-white' />
             </div>
             <div className='p-3 flex gap-2 items-center'
                 onMouseEnter={() => {
@@ -56,7 +56,7 @@ export default function TaskCard({ task, id }) {
                 <p>{description}</p>
 
                 {completed === 1 &&
-                    <span className='text-xs ml-auto text-green-600 '>Completed</span>
+                    <span className='text-xs ml-auto text-green-600 '>Completed!</span>
                 }
 
             </div>
