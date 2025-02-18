@@ -15,11 +15,10 @@ export default function TodoCard({ todo, onAdd }) {
                 </div>
                 <section className="flex flex-col justify-start gap-3 overflow-y-auto max-h-110">
                     {todo.tasks && todo.tasks.map(task => (
-                        <TaskCard key={task.id} task={task} id={task.id} />
+                        <TaskCard key={task.id} task={task} taskId={task.id} toDoId={todo.id} />
                     ))}
                 </section>
                 <div className="mt-3">
-                    {/* onAdd={funzione per aggiungere task }  */}
                     <AddTaskButton columnId={todo.id} onAdd={onAdd} />
                 </div>
             </div>

@@ -3,9 +3,9 @@ const connection = require('../data/db.js')
 // Store
 function store(req, res) {
     const { todo_id } = req.params
-    const { description, priority, completed } = req.body
+    const { description, priority } = req.body
 
-    console.log("Received data:", { todo_id, description, priority, completed })
+    console.log("Received data:", { todo_id, description, priority })
 
 
     // Validazione
@@ -24,17 +24,13 @@ function store(req, res) {
         error.push('Priority must be a number between 1 and 3')
     }
 
-    if (completed !== undefined && typeof completed !== 'boolean') {
-        error.push('Completed must be a boolean, 0 or 1')
-    }
-
     if (error.length > 0) {
         return res.status(400).json({ error: error })
     }
 
 
-    const sql = `INSERT INTO tasks (todo_id, description, priority, completed) VALUES (?, ?, ?, ?)`
-    connection.query(sql, [todo_id, description, priority, completed], (err, results) => {
+    const sql = `INSERT INTO tasks (todo_id, description, priority) VALUES (?, ?, ?)`
+    connection.query(sql, [todo_id, description, priority], (err, results) => {
         if (err) return res.status(500).json({ error: err.message })
         res.status(201).json({ message: 'Task added succesfully' })
     })
@@ -77,6 +73,7 @@ function update(req, res) {
     })
 }
 
+
 // Modify (modifiche parziali)
 function modify(req, res) {
     const { todo_id, id } = req.params
@@ -97,8 +94,14 @@ function modify(req, res) {
         error.push('Priority must be a number between 1 and 3')
     }
 
-    if (updates.completed !== undefined && typeof updates.completed !== 'boolean') {
-        error.push('Completed must be a boolean, 0 or 1')
+    if (updates.completed !== undefined) {
+        if (typeof updates.completed === 'string') {
+            updates.completed = updates.completed === 'true' || updates.completed === '1';
+        } else if (typeof updates.completed === 'number') {
+            updates.completed = updates.completed === 1;
+        } else if (typeof updates.completed !== 'boolean') {
+            error.push('Completed must be a boolean')
+        }
     }
 
     if (error.length > 0) {
