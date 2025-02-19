@@ -95,4 +95,4 @@ function destroy(req, res) {
     })
 }
 
-module.exports = { store, update, modify, destroy }
+module.exports = { store, modify, destroy }

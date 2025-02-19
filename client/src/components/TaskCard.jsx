@@ -20,14 +20,14 @@ export default function TaskCard({ task, taskId, toDoId, onDelete, onModify }) {
     // Stato per gestire la modifica della task
     const [isEditing, setIsEditing] = useState(false);
     // Stato per settare i nuovi dati alla modifica (di default quelli del db)
-    const [taskData, setTaskData] = useState({ description, priority })
+    const [taskData, setTaskData] = useState({ description, priority });
 
     // Funzione per collegare i value del form di modifica con il loro stato
     const handleTaskDataChange = (e) => {
         const { name, value } = e.target;
         setTaskData({
             ...taskData,
-            [name]: value
+            [name]: name === 'priority' ? parseInt(value) : value
         });
     }
 
@@ -35,7 +35,7 @@ export default function TaskCard({ task, taskId, toDoId, onDelete, onModify }) {
     const modifyTask = async (e) => {
         e.preventDefault();
         try {
-            await axios.patch(`http://localhost:3000/todos/${toDoId}/tasks/${taskId}`, taskData)
+            await axios.patch(`http://localhost:3000/todos/${toDoId}/tasks/${taskId}`, taskData);
             onModify();
             setIsEditing(false);
         } catch (err) {
@@ -74,6 +74,11 @@ export default function TaskCard({ task, taskId, toDoId, onDelete, onModify }) {
         setCompleted(newCompleted);
     };
 
+    // Funzione per annullare la modifica
+    const handleCancelClick = () => {
+        setIsEditing(false);
+    };
+
     return (
         <section className="flex flex-col bg-gray-200 rounded-lg text-gray-800">
             <div className={`flex justify-end items-center px-3 py-1 ${priorityColor} rounded-t-lg`}>
@@ -89,7 +94,7 @@ export default function TaskCard({ task, taskId, toDoId, onDelete, onModify }) {
                     setTimeout(() => setIsHoveredTask(false), 150); // Durata dell'animazione
                 }}
             >
-                {isHoveredTask && (
+                {isHoveredTask && !isEditing && (
                     <RadioButton
                         checked={completed}
                         taskId={taskId}
@@ -113,16 +118,17 @@ export default function TaskCard({ task, taskId, toDoId, onDelete, onModify }) {
                             onChange={handleTaskDataChange}
                             className="bg-gray-700 text-gray-200 p-2 rounded-lg"
                         >
-                            <option value={1}>High</option>
-                            <option value={2}>Medium</option>
-                            <option value={3}>Low</option>
+                            <option value='1'>High</option>
+                            <option value='2'>Medium</option>
+                            <option value='3'>Low</option>
                         </select>
                         <button type="submit" className="bg-blue-500 text-white p-2 rounded-lg">Save</button>
+                        <button type="button" onClick={handleCancelClick} className="bg-blue-500 text-white p-2 rounded-lg">Cancel</button>
                     </form>
                 ) : (
                     <p>{description}</p>
                 )}
-                {completed && (
+                {completed && !isEditing && (
                     <span className='text-xs ml-auto text-green-600 animate__animated animate__bounceInLeft animate__faster'>Completed!</span>
                 )}
             </div>
