@@ -36,44 +36,6 @@ function store(req, res) {
     })
 }
 
-// Update (modificare l'intera risorsa)
-function update(req, res) {
-    const { todo_id, id } = req.params
-    const { description, priority, completed } = req.body
-
-    // Validazione
-    let error = []
-
-    if (isNaN(parseInt(todo_id)) || isNaN(parseInt(id))) {
-        error.push('Invalid todo_id or id')
-    }
-
-    if (!description || typeof description !== 'string' || description.length > 255) {
-        error.push('Description must be a string of max 255 characters')
-    }
-
-    if (typeof priority !== 'number' || priority < 1 || priority > 3) {
-        error.push('Priority must be a number between 1 and 3')
-    }
-
-    if (typeof completed !== 'boolean') {
-        error.push('Completed must be a boolean, 0 or 1')
-    }
-
-    if (error.length > 0) {
-        return res.status(400).json({ error: error })
-    }
-
-    const sql = `UPDATE tasks SET description = ?, priority = ?, completed = ? WHERE id = ? AND todo_id = ?`
-
-    connection.query(sql, [description, priority, completed, id, todo_id], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message })
-        if (results.affectedRows === 0) return res.status(404).json({ error: 'Resource not found' })
-        res.status(200).json({ message: 'Task updated successfully' })
-    })
-}
-
-
 // Modify (modifiche parziali)
 function modify(req, res) {
     const { todo_id, id } = req.params

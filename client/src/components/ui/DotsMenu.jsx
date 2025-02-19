@@ -3,7 +3,7 @@ import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import ModifyButton from './ModifyButton.jsx'
 import DeleteButton from './DeleteButton.jsx'
 
-export default function DotsMenu({ onClick, className, toDoId, taskId, onDelete }) {
+export default function DotsMenu({ onClick, className, toDoId, taskId, onDelete, onModify }) {
 
     return (
         <section>
@@ -20,7 +20,7 @@ export default function DotsMenu({ onClick, className, toDoId, taskId, onDelete 
                 >
                     <MenuItem as="div">
                         <span className="block">
-                            <ModifyButton />
+                            <ModifyButton onModify={onModify} />
                         </span>
                     </MenuItem>
                     <MenuItem as="div">

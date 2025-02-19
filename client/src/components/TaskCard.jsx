@@ -1,9 +1,12 @@
 import { useContext, useState } from 'react';
-import DotsMenu from '../components/ui/DotsMenu.jsx';
+import axios from "axios";
 import { GlobalContext } from '../contexts/GlobalContext.jsx';
+
+// Components
+import DotsMenu from '../components/ui/DotsMenu.jsx';
 import RadioButton from './ui/RadioButton.jsx';
 
-export default function TaskCard({ task, taskId, toDoId, onDelete }) {
+export default function TaskCard({ task, taskId, toDoId, onDelete, onModify }) {
 
     const { description, priority } = task;
 
@@ -14,7 +17,36 @@ export default function TaskCard({ task, taskId, toDoId, onDelete }) {
     const [isHoveredTask, setIsHoveredTask] = useState(false);
     // Stato per gestire il completamente della task
     const [completed, setCompleted] = useState(task.completed === 1 ? task.completed : '');
+    // Stato per gestire la modifica della task
+    const [isEditing, setIsEditing] = useState(false);
+    // Stato per settare i nuovi dati alla modifica (di default quelli del db)
+    const [taskData, setTaskData] = useState({ description, priority })
 
+    // Funzione per collegare i value del form di modifica con il loro stato
+    const handleTaskDataChange = (e) => {
+        const { name, value } = e.target;
+        setTaskData({
+            ...taskData,
+            [name]: value
+        });
+    }
+
+    // Funzione per eseguire la modifica della task
+    const modifyTask = async (e) => {
+        e.preventDefault();
+        try {
+            await axios.patch(`http://localhost:3000/todos/${toDoId}/tasks/${taskId}`, taskData)
+            onModify();
+            setIsEditing(false);
+        } catch (err) {
+            console.error("Error modifying the task!", err);
+        }
+    }
+
+    // Funzione per gestire la modifica al click del suo bottone
+    const handleModifyClick = () => {
+        setIsEditing(true);
+    };
 
     // Funzione per determinare la classe di colore in base alla priorità
     const getPriorityColor = (priority) => {
@@ -45,7 +77,7 @@ export default function TaskCard({ task, taskId, toDoId, onDelete }) {
     return (
         <section className="flex flex-col bg-gray-200 rounded-lg text-gray-800">
             <div className={`flex justify-end items-center px-3 py-1 ${priorityColor} rounded-t-lg`}>
-                <DotsMenu toDoId={toDoId} taskId={taskId} onDelete={onDelete} className='text-gray-900 hover:bg-gray-600 hover:opacity-60 hover:text-white' />
+                <DotsMenu toDoId={toDoId} taskId={taskId} onDelete={onDelete} onModify={handleModifyClick} className='text-gray-900 hover:bg-gray-600 hover:opacity-60 hover:text-white' />
             </div>
             <div className='p-3 flex gap-2 items-center'
                 onMouseEnter={() => {
@@ -66,8 +98,30 @@ export default function TaskCard({ task, taskId, toDoId, onDelete }) {
                         onCompletedChange={handleCompletedChange}
                     />
                 )}
-                <p>{description}</p>
-
+                {isEditing ? (
+                    <form onSubmit={modifyTask} className="flex flex-col gap-2">
+                        <input
+                            type="text"
+                            name="description"
+                            value={taskData.description}
+                            onChange={handleTaskDataChange}
+                            className="bg-gray-700 text-gray-200 p-2 rounded-lg"
+                        />
+                        <select
+                            name="priority"
+                            value={taskData.priority}
+                            onChange={handleTaskDataChange}
+                            className="bg-gray-700 text-gray-200 p-2 rounded-lg"
+                        >
+                            <option value={1}>High</option>
+                            <option value={2}>Medium</option>
+                            <option value={3}>Low</option>
+                        </select>
+                        <button type="submit" className="bg-blue-500 text-white p-2 rounded-lg">Save</button>
+                    </form>
+                ) : (
+                    <p>{description}</p>
+                )}
                 {completed && (
                     <span className='text-xs ml-auto text-green-600 animate__animated animate__bounceInLeft animate__faster'>Completed!</span>
                 )}

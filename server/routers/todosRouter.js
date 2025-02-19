@@ -21,9 +21,6 @@ router.delete('/:id', todosController.destroy)
 // Store
 router.post('/:todo_id/tasks', tasksController.store)
 
-// Update (modificare l'intera risorsa task)
-router.put('/:todo_id/tasks/:id', tasksController.update)
-
 // Modify (modifiche parziali task)
 router.patch('/:todo_id/tasks/:id', tasksController.modify)
 
