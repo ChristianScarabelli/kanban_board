@@ -39,7 +39,7 @@ export default function TodoCard({ todo, onAdd, onDelete, onModify }) {
         }
     };
     return (
-        <section className="w-72">
+        <section className="w-72 animate__animated animate__fadeInDown animate__faster">
             <div className="flex flex-col justify-start p-3 rounded-lg bg-gray-800 text-gray-400 max-h-140 overflow-y-auto">
                 <div className="flex justify-between items-center mb-3">
                     {isEditing ? (

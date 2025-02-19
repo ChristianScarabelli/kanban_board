@@ -80,7 +80,7 @@ export default function TaskCard({ task, taskId, toDoId, onDelete, onModify }) {
     };
 
     return (
-        <section className={`${isEditing && 'bg-gray-600'} flex flex-col bg-gray-200 rounded-lg text-gray-800`}>
+        <section className={`${isEditing && 'bg-gray-600'} flex flex-col bg-gray-200 rounded-lg text-gray-800 animate__animated animate__fadeInDown animate__faster`}>
             <div className={`flex justify-end items-center px-3 py-1 ${priorityColor} rounded-t-lg`}>
                 <DotsMenu toDoId={toDoId} taskId={taskId} onDelete={onDelete} onModify={handleModifyClick} className='text-gray-900 hover:bg-gray-600 hover:opacity-60 hover:text-white' />
             </div>
