@@ -8,7 +8,7 @@ export default function ModifyButton({ onClick }) {
                 <Tooltip.Trigger asChild>
                     <button
                         onClick={onClick}
-                        className="flex items-center justify-center p-2 rounded-lg text-gray-200 hover:bg-blue-500 relative"
+                        className="cursor-pointer flex items-center justify-center p-2 rounded-lg text-gray-200 hover:bg-blue-500 relative"
                     >
                         <PencilSquareIcon className="h-5 w-5" />
                     </button>

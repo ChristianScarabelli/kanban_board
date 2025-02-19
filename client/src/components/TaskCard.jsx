@@ -3,7 +3,7 @@ import DotsMenu from '../components/ui/DotsMenu.jsx';
 import { GlobalContext } from '../contexts/GlobalContext.jsx';
 import RadioButton from './ui/RadioButton.jsx';
 
-export default function TaskCard({ task, taskId, toDoId }) {
+export default function TaskCard({ task, taskId, toDoId, onDelete }) {
 
     const { description, priority } = task;
 
@@ -45,7 +45,7 @@ export default function TaskCard({ task, taskId, toDoId }) {
     return (
         <section className="flex flex-col bg-gray-200 rounded-lg text-gray-800">
             <div className={`flex justify-end items-center px-3 py-1 ${priorityColor} rounded-t-lg`}>
-                <DotsMenu className='text-gray-900 hover:bg-gray-600 hover:opacity-60 hover:text-white' />
+                <DotsMenu toDoId={toDoId} taskId={taskId} onDelete={onDelete} className='text-gray-900 hover:bg-gray-600 hover:opacity-60 hover:text-white' />
             </div>
             <div className='p-3 flex gap-2 items-center'
                 onMouseEnter={() => {
