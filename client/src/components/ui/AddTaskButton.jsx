@@ -104,7 +104,7 @@ export default function AddTaskButton({ columnId, onAdd }) {
                     </select>
                     <div className="flex gap-2 mt-3">
                         <button type="submit" className="text-sm cursor-pointer p-2 rounded-lg text-gray-200 bg-blue-500 hover:bg-blue-700">Add Task</button>
-                        <button type="button" onClick={handleCancelClick} className="text-sm cursor-pointer p-2 rounded-lg text-gray-200 bg-red-500 hover:bg-red-700">Cancel</button>
+                        <button type="button" onClick={handleCancelClick} className="text-sm cursor-pointer p-2 rounded-lg text-gray-200 bg-red-600 hover:bg-red-700">Cancel</button>
                     </div>
                     <span className="mt-3 text-sm">{errorMessage}</span>
                 </form>

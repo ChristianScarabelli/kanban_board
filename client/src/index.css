@@ -9,6 +9,7 @@ html {
 }
 
 .dots_menu_animation,
-.radio_task_animation {
+.radio_task_animation,
+.todo_modify_form_animation {
     --animate-duration: 0.20s;
 }

@@ -80,7 +80,7 @@ export default function TaskCard({ task, taskId, toDoId, onDelete, onModify }) {
     };
 
     return (
-        <section className="flex flex-col bg-gray-200 rounded-lg text-gray-800">
+        <section className={`${isEditing && 'bg-gray-600'} flex flex-col bg-gray-200 rounded-lg text-gray-800`}>
             <div className={`flex justify-end items-center px-3 py-1 ${priorityColor} rounded-t-lg`}>
                 <DotsMenu toDoId={toDoId} taskId={taskId} onDelete={onDelete} onModify={handleModifyClick} className='text-gray-900 hover:bg-gray-600 hover:opacity-60 hover:text-white' />
             </div>
@@ -99,17 +99,18 @@ export default function TaskCard({ task, taskId, toDoId, onDelete, onModify }) {
                         checked={completed}
                         taskId={taskId}
                         toDoId={toDoId}
-                        className={`cursor-pointer animate__animated ${animationClass} radio_task_animation h-4 w-4`}
+                        className={`cursor-pointer animate__animated ${animationClass} radio_task_animation  min-h-4 min-w-4`}
                         onCompletedChange={handleCompletedChange}
                     />
                 )}
                 {isEditing ? (
-                    <form onSubmit={modifyTask} className="flex flex-col gap-2">
+                    <form onSubmit={modifyTask} className="flex flex-col gap-2 rounded-lg overflow-hidden animate__animated animate__fadeInDown animate__faster">
                         <input
                             type="text"
                             name="description"
                             value={taskData.description}
                             onChange={handleTaskDataChange}
+                            autoFocus
                             className="bg-gray-700 text-gray-200 p-2 rounded-lg"
                         />
                         <select
@@ -122,8 +123,10 @@ export default function TaskCard({ task, taskId, toDoId, onDelete, onModify }) {
                             <option value='2'>Medium</option>
                             <option value='3'>Low</option>
                         </select>
-                        <button type="submit" className="bg-blue-500 text-white p-2 rounded-lg">Save</button>
-                        <button type="button" onClick={handleCancelClick} className="bg-blue-500 text-white p-2 rounded-lg">Cancel</button>
+                        <div className='flex items-center gap-2'>
+                            <button type="submit" className="text-sm cursor-pointer p-2 rounded-lg text-gray-200 bg-blue-500 hover:bg-blue-700">Save</button>
+                            <button type="button" onClick={handleCancelClick} className="text-sm cursor-pointer p-2 rounded-lg text-gray-200 bg-red-600 hover:bg-red-700">Cancel</button>
+                        </div>
                     </form>
                 ) : (
                     <p>{description}</p>
