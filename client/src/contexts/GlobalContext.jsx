@@ -13,9 +13,11 @@ function GlobalProvider({ children }) {
     const [toggleButtonText, setToggleButtonText] = useState(false);
     // Input value
     const [inputValue, setInputValue] = useState('');
+    // Error message
+    const [errorMessage, setErrorMessage] = useState("");
 
     return (
-        <GlobalContext.Provider value={{ inHover, setInHover, animationClass, setAnimationClass, toggleButtonText, setToggleButtonText, inputValue, setInputValue }}>
+        <GlobalContext.Provider value={{ errorMessage, setErrorMessage, inHover, setInHover, animationClass, setAnimationClass, toggleButtonText, setToggleButtonText, inputValue, setInputValue }}>
             {children}
         </GlobalContext.Provider>
     );

@@ -24,8 +24,8 @@ export default function RadioButton({ checked, className, taskId, toDoId, onComp
                 <Tooltip.Trigger asChild>
                     <div
                         onClick={handleClick}
-                        className={`w-4 h-4 border-2 rounded-full flex items-center justify-center cursor-pointer transition-all
-                        ${radioChecked ? "border-green-600 bg-green-600" : "border-gray-700"}
+                        className={`transition transform hover:scale-110 w-4 h-4 border-2 rounded-full flex items-center justify-center cursor-pointer
+                        ${radioChecked ? "border-green-600 hover:border-green-500 bg-green-600 hover:bg-green-500 " : "border-gray-700 hover:border-3 hover:border-blue-500"}
                         ${className || ""}`}
                     >
                         {radioChecked ? <Check className="text-white w-4 h-4" /> : null}

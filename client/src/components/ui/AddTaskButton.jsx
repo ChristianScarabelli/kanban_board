@@ -1,8 +1,12 @@
 import { PlusIcon } from "@heroicons/react/20/solid";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
+import { GlobalContext } from "../../contexts/GlobalContext";
 
 export default function AddTaskButton({ columnId, onAdd }) {
+
+    const { errorMessage, setErrorMessage } = useContext(GlobalContext)
+
     const initialFormData = {
         description: "",
         priority: ""
@@ -34,6 +38,7 @@ export default function AddTaskButton({ columnId, onAdd }) {
         setTimeout(() => {
             setIsClicked(false);
             setFormData(initialFormData);
+            setErrorMessage('')
         }, 300); // Durata dell'animazione in uscita
     };
 
@@ -42,10 +47,16 @@ export default function AddTaskButton({ columnId, onAdd }) {
         e.preventDefault();
         console.log("Submitting new task:", formData);
 
+        // Validazione se la description è vuota o contiene solo spazi
+        if (!formData.description.trim()) {
+            setErrorMessage("Description cannot be empty!");
+            return
+        }
+
         try {
             const response = await axios.post(`http://localhost:3000/todos/${columnId}/tasks`, {
                 ...formData,
-                priority: formData.priority ? parseInt(formData.priority) : null
+                priority: formData.priority ? parseInt(formData.priority) : null,
             });
 
             setFormData(initialFormData);
@@ -95,6 +106,7 @@ export default function AddTaskButton({ columnId, onAdd }) {
                         <button type="submit" className="text-sm cursor-pointer p-2 rounded-lg text-gray-200 bg-blue-500 hover:bg-blue-700">Add Task</button>
                         <button type="button" onClick={handleCancelClick} className="text-sm cursor-pointer p-2 rounded-lg text-gray-200 bg-red-500 hover:bg-red-700">Cancel</button>
                     </div>
+                    <span className="mt-3 text-sm">{errorMessage}</span>
                 </form>
             ) : (
                 <button
