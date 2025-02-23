@@ -10,9 +10,9 @@ export default function TaskCard({ task, taskId, toDoId, onDelete, onModify }) {
 
     const { description, priority } = task;
 
+    const { animationClass, setAnimationClass } = useContext(GlobalContext)
+
     // Stati
-    // Stato per l'animazione dell'hover
-    const { animationClass, setAnimationClass } = useContext(GlobalContext);
     // Stato per gestire localmente l'hover di una task
     const [isHoveredTask, setIsHoveredTask] = useState(false);
     // Stato per gestire il completamente della task

@@ -37,6 +37,7 @@ export default function TodoCard({ todo, onAdd, onDelete, onModify }) {
         } catch (err) {
             console.error("Error modifying the todo!", err);
         }
+
     };
     return (
         <section className="w-72 animate__animated animate__fadeInDown animate__faster">

@@ -3,6 +3,7 @@ import { useState } from "react";
 import axios from "axios";
 
 export default function AddColumnButton({ onAdd }) {
+
     const [inputValue, setInputValue] = useState("");
     const [isClicked, setIsClicked] = useState(false);
 

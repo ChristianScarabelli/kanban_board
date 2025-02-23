@@ -1,21 +1,29 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 
 // Components
 import TodoCard from "./TodoCard";
 import AddColumnButton from "./ui/AddColumnButton";
+import { GlobalContext } from "../contexts/GlobalContext";
 
 export default function Main() {
+
+    const { setIsLoading } = useContext(GlobalContext)
+
     const [todos, setTodos] = useState([]);
 
     // Fetch delle todos
     const fetchTodos = async () => {
+        setIsLoading(true);
         try {
             const response = await axios.get("http://localhost:3000/todos");
             setTodos(response.data);
             // MESSAGGIO NOTIFICA DA FARE
         } catch (err) {
             console.error("Error fetching the todos!", err);
+        }
+        finally {
+            setIsLoading(false);
         }
     };
 

@@ -58,7 +58,6 @@ export default function AddTaskButton({ columnId, onAdd }) {
                 ...formData,
                 priority: formData.priority ? parseInt(formData.priority) : null,
             });
-
             setFormData(initialFormData);
             setIsClicked(false);
             setIsOpen(false);
