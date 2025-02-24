@@ -5,6 +5,7 @@ import { GlobalContext } from '../contexts/GlobalContext.jsx';
 // Components
 import DotsMenu from '../components/ui/DotsMenu.jsx';
 import RadioButton from './ui/RadioButton.jsx';
+import { notifySuccess } from './ui/Notify.jsx'
 
 export default function TaskCard({ task, taskId, toDoId, onDelete, onModify }) {
 
@@ -38,6 +39,7 @@ export default function TaskCard({ task, taskId, toDoId, onDelete, onModify }) {
             await axios.patch(`http://localhost:3000/todos/${toDoId}/tasks/${taskId}`, taskData);
             onModify();
             setIsEditing(false);
+            notifySuccess('Task modified!')
         } catch (err) {
             console.error("Error modifying the task!", err);
         }

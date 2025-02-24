@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+:root {
+    --toastify-color-dark: #1F2937;
+    --toastify-icon-color-success: #059669;
+    --toastify-text-color-dark: #E5E7EB;
+}
 
 html {
     font-family: "Signika Negative", serif;

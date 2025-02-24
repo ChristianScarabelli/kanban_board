@@ -1,6 +1,7 @@
 import { TrashIcon } from "@heroicons/react/20/solid";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import axios from "axios";
+import { notifySuccess } from './Notify'
 
 export default function DeleteButton({ toDoId, taskId, onDelete }) {
 
@@ -15,13 +16,12 @@ export default function DeleteButton({ toDoId, taskId, onDelete }) {
             const response = await axios.delete(url)
             // chiamo la funzione di eliminazione nella chiamata
             onDelete()
-            // MESSAGGIO NOTIFICA DA FARE
+            notifySuccess('Deleted successfully!')
         }
         catch (err) {
             console.error("Error on deleting!", err);
         }
     }
-
 
     return (
         <Tooltip.Provider>
@@ -34,7 +34,6 @@ export default function DeleteButton({ toDoId, taskId, onDelete }) {
                         <TrashIcon className="h-5 w-5" />
                     </button>
                 </Tooltip.Trigger>
-
                 <Tooltip.Portal>
                     <Tooltip.Content
                         side="top"

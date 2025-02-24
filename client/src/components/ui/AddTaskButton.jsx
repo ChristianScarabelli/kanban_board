@@ -2,6 +2,7 @@ import { PlusIcon } from "@heroicons/react/20/solid";
 import { useContext, useState } from "react";
 import axios from "axios";
 import { GlobalContext } from "../../contexts/GlobalContext";
+import { notifySuccess } from './Notify.jsx'
 
 export default function AddTaskButton({ columnId, onAdd }) {
 
@@ -63,6 +64,7 @@ export default function AddTaskButton({ columnId, onAdd }) {
             setIsOpen(false);
             // Chiamo la funzione onAdd durante la chiamata
             onAdd();
+            notifySuccess('New Task added!')
         } catch (err) {
             console.error("Error adding the new task!", err);
             setIsClicked(false);

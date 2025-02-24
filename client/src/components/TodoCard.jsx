@@ -6,6 +6,7 @@ import AddTaskButton from "./ui/AddTaskButton";
 import TaskCard from "./TaskCard";
 import DotsMenu from "./ui/DotsMenu";
 import { GlobalContext } from "../contexts/GlobalContext";
+import { notifySuccess } from './ui/Notify.jsx'
 
 export default function TodoCard({ todo, onAdd, onDelete, onModify }) {
 
@@ -22,11 +23,6 @@ export default function TodoCard({ todo, onAdd, onDelete, onModify }) {
         setAnimationClass('animate__bounceInDown')
     }
 
-    // Funzione per gestire il blur
-    const handleBlur = () => {
-        setIsEditing(false);
-    }
-
     // Funzione di submit della modifica
     const modifyTitle = async (e) => {
         e.preventDefault();
@@ -34,6 +30,7 @@ export default function TodoCard({ todo, onAdd, onDelete, onModify }) {
             await axios.put(`http://localhost:3000/todos/${todo.id}`, { title: newTitle });
             onModify();
             setIsEditing(false);
+            notifySuccess('Title modified!')
         } catch (err) {
             console.error("Error modifying the todo!", err);
         }
@@ -44,7 +41,7 @@ export default function TodoCard({ todo, onAdd, onDelete, onModify }) {
             <div className="flex flex-col justify-start p-3 rounded-lg bg-gray-800 text-gray-400 max-h-140 overflow-y-auto">
                 <div className="flex justify-between items-center mb-3">
                     {isEditing ? (
-                        <form onSubmit={modifyTitle} onBlur={handleBlur} className={`${animationClass} flex flex-col w-full gap-3 animate__animated  todo_modify_form_animation`}>
+                        <form onSubmit={modifyTitle} className={`${animationClass} flex flex-col w-full gap-3 animate__animated  todo_modify_form_animation`}>
                             <input
                                 type="text"
                                 value={newTitle}
@@ -54,7 +51,7 @@ export default function TodoCard({ todo, onAdd, onDelete, onModify }) {
                             />
                             <div className="flex gap-2">
                                 <button type="submit" className="text-sm cursor-pointer p-2 rounded-lg text-gray-200 bg-blue-500 hover:bg-blue-700">Save</button>
-                                <button onClick={() => setIsEditing(false)} className="text-sm cursor-pointer p-2 rounded-lg text-gray-200 bg-red-600 hover:bg-red-700">Cancel</button>
+                                <button type="button" onClick={() => setIsEditing(false)} className="text-sm cursor-pointer p-2 rounded-lg text-gray-200 bg-red-600 hover:bg-red-700">Cancel</button>
                             </div>
                         </form>
                     ) : (
