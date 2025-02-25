@@ -46,6 +46,7 @@ export default function Main() {
                     <AddColumnButton onAdd={handleAddColumn} />
                 </div>
             </div>
+            {/* Inserisco il container delle notifiche nel componente più alto/padre della app */}
             <Notify className='bg-gray-800 text-gray-400' />
         </main>
     );

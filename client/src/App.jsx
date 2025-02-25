@@ -16,7 +16,7 @@ function App() {
         <Main />
       </section>
       <Footer />
-      {/* Passo isLoading come prop dal context */}
+      {/* Passo isLoading come prop dal context, che verrà poi settato nelle varie chiamate dei vari componenti */}
       <Loader isLoading={isLoading} />
     </section>
   );

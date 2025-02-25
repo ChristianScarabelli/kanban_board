@@ -6,8 +6,8 @@ export default function Loader({ isLoading }) {  // Passo isLoading come prop, e
             {isLoading && (
                 <motion.div
                     className="fixed top-0 left-0 w-screen h-screen bg-black opacity-20 flex justify-center items-center"
-                    initial={{ opacity: 1 }}
-                    animate={{ opacity: 1 }}
+                    initial={{ opacity: 0.5 }}
+                    animate={{ opacity: 0.5 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.5 }}
                 >
