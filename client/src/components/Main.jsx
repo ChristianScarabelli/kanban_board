@@ -90,6 +90,7 @@ export default function Main() {
 
                 const newTodos = arrayMove(todos, activeIndex, overIndex);
                 setTodos(newTodos);
+                saveTodos(newTodos);
             } else {
                 const activeTask = active.id.split('-');
                 const overTask = over.id.split('-');
@@ -130,6 +131,15 @@ export default function Main() {
                     setTodos(newTodos);
                 }
             }
+        }
+    };
+
+    // Funzione per salvare i todo aggiornati sul server
+    const saveTodos = async (updatedTodos) => {
+        try {
+            await axios.put("http://localhost:3000/todos/reorder", { todos: updatedTodos });
+        } catch (err) {
+            console.error("Error saving the todos!", err);
         }
     };
 
