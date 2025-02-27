@@ -8,22 +8,17 @@ import DotsMenu from "./ui/DotsMenu";
 import { GlobalContext } from "../contexts/GlobalContext";
 import { notifySuccess } from './ui/Notify.jsx'
 
-export default function TodoCard({ todo, onAdd, onDelete, onModify }) {
+export default function TodoCard({ todo, onAdd, onDelete, onModify, onDragStart, onDrop }) {
+    const { animationClass, setAnimationClass } = useContext(GlobalContext);
 
-    const { animationClass, setAnimationClass } = useContext(GlobalContext)
-
-    // Stato per la modifica
     const [isEditing, setIsEditing] = useState(false);
-    // stato per settare il nuovo title
     const [newTitle, setNewTitle] = useState(todo.title);
 
-    // Funzione per gestire la modifica
     const handleModify = () => {
         setIsEditing(true);
-        setAnimationClass('animate__bounceInDown')
-    }
+        setAnimationClass('animate__bounceInDown');
+    };
 
-    // Funzione di submit della modifica
     const modifyTitle = async (e) => {
         e.preventDefault();
         try {
@@ -34,8 +29,17 @@ export default function TodoCard({ todo, onAdd, onDelete, onModify }) {
         } catch (err) {
             console.error("Error modifying the todo!", err);
         }
-
     };
+
+    const handleDragOver = (e) => {
+        e.preventDefault();
+    };
+
+    const handleDrop = (e, targetTaskId) => {
+        e.preventDefault();
+        onDrop(todo.id, targetTaskId);
+    };
+
     return (
         <section className="w-72 animate__animated animate__fadeInDown animate__faster">
             <div className="flex flex-col justify-start p-3 rounded-lg bg-gray-800 text-gray-400 max-h-140 overflow-y-auto">
@@ -59,14 +63,22 @@ export default function TodoCard({ todo, onAdd, onDelete, onModify }) {
                     )}
                     {!isEditing &&
                         <DotsMenu toDoId={todo.id} onDelete={onDelete} onModify={handleModify} className='text-gray-200 hover:bg-gray-600 hover:opacity-80' />
-
                     }
                 </div>
-                <section className="flex flex-col justify-start gap-3 overflow-y-auto max-h-110">
+                <div className="flex flex-col justify-start gap-3 overflow-y-auto max-h-110" onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, null)}>
                     {todo.tasks && todo.tasks.map(task => (
-                        <TaskCard key={task.id} task={task} taskId={task.id} toDoId={todo.id} onDelete={onDelete} onModify={onModify} />
+                        <TaskCard
+                            key={task.id}
+                            task={task}
+                            taskId={task.id}
+                            toDoId={todo.id}
+                            onDelete={onDelete}
+                            onModify={onModify}
+                            onDragStart={onDragStart}
+                            onDrop={handleDrop}
+                        />
                     ))}
-                </section>
+                </div>
                 <div className="mt-3">
                     <AddTaskButton columnId={todo.id} onAdd={onAdd} />
                 </div>
