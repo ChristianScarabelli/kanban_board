@@ -89,7 +89,6 @@ export default function Main() {
                 const newTasks = arrayMove(todo.tasks, activeIndex, overIndex);
                 const newTodos = todos.map(todo => todo.id === activeTodoId ? { ...todo, tasks: newTasks } : todo);
                 setTodos(newTodos);
-                saveTodos(newTodos);
             } else {
                 // Spostamento tra colonne diverse
                 const sourceTodo = todos.find(todo => todo.id === activeTodoId);
@@ -110,21 +109,12 @@ export default function Main() {
                         return todo;
                     }
                 });
-
                 setTodos(newTodos);
-                saveTodos(newTodos);
             }
         }
     };
 
-    // Funzione per salvare i todo aggiornati sul server
-    const saveTodos = async (updatedTodos) => {
-        try {
-            await axios.put("http://localhost:3000/todos/reorder", { todos: updatedTodos });
-        } catch (err) {
-            console.error("Error saving the todos!", err);
-        }
-    };
+
 
     // Funzione per aggiungere una nuova colonna
     const handleAddColumn = () => {
