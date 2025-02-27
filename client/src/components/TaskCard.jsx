@@ -27,7 +27,6 @@ export default function TaskCard({ task, taskId, toDoId, onDelete, onModify }) {
             [name]: name === 'priority' ? parseInt(value) : value
         });
     };
-
     // Funzione per modificare la task
     const modifyTask = async (e) => {
         e.preventDefault();
@@ -81,6 +80,7 @@ export default function TaskCard({ task, taskId, toDoId, onDelete, onModify }) {
         transform: CSS.Transform.toString(transform),
         transition,
     };
+
 
     return (
         <section

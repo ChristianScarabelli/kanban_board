@@ -28,6 +28,7 @@ export default function Main() {
     const { setIsLoading } = useContext(GlobalContext);
     const [todos, setTodos] = useState([]); // Stato per memorizzare le colonne (todo)
     const [activeTask, setActiveTask] = useState(null); // Stato per memorizzare il task attivo durante il drag
+    const [activeTodo, setActiveTodo] = useState(null); // Stato per memorizzare il todo attivo durante il drag
 
     // Funzione per recuperare i todo dal server
     const fetchTodos = async () => {
@@ -57,64 +58,80 @@ export default function Main() {
     // Funzione chiamata all'inizio del drag
     const handleDragStart = (event) => {
         const { active } = event;
-        const activeTask = active.id.split('-');
-        const activeTodoId = parseInt(activeTask[1]);
-        const activeTaskId = parseInt(activeTask[2]);
-        const todo = todos.find(todo => todo.id === activeTodoId);
-        const task = todo.tasks.find(task => task.id === activeTaskId);
-        setActiveTask(task);
+        if (active.id.startsWith('todo-')) {
+            const activeTodoId = parseInt(active.id.split('-')[1]);
+            const todo = todos.find(todo => todo.id === activeTodoId);
+            setActiveTodo(todo);
+        } else {
+            const activeTask = active.id.split('-');
+            const activeTodoId = parseInt(activeTask[1]);
+            const activeTaskId = parseInt(activeTask[2]);
+            const todo = todos.find(todo => todo.id === activeTodoId);
+            const task = todo.tasks.find(task => task.id === activeTaskId);
+            setActiveTask(task);
+        }
     };
 
     // Funzione chiamata alla fine del drag
     const handleDragEnd = (event) => {
         const { active, over } = event;
         setActiveTask(null);
+        setActiveTodo(null);
 
         if (!over) return;
 
         if (active.id !== over.id) {
-            const activeTask = active.id.split('-');
-            const overTask = over.id.split('-');
+            if (active.id.startsWith('todo-')) {
+                const activeTodoId = parseInt(active.id.split('-')[1]);
+                const overTodoId = parseInt(over.id.split('-')[1]);
 
-            const activeTodoId = parseInt(activeTask[1]);
-            const activeTaskId = parseInt(activeTask[2]);
-            const overTodoId = parseInt(overTask[1]);
-            const overTaskId = parseInt(overTask[2]);
+                const activeIndex = todos.findIndex(todo => todo.id === activeTodoId);
+                const overIndex = todos.findIndex(todo => todo.id === overTodoId);
 
-            if (activeTodoId === overTodoId) {
-                // Spostamento all'interno della stessa colonna
-                const todo = todos.find(todo => todo.id === activeTodoId);
-                const activeIndex = todo.tasks.findIndex(task => task.id === activeTaskId);
-                const overIndex = todo.tasks.findIndex(task => task.id === overTaskId);
-                const newTasks = arrayMove(todo.tasks, activeIndex, overIndex);
-                const newTodos = todos.map(todo => todo.id === activeTodoId ? { ...todo, tasks: newTasks } : todo);
+                const newTodos = arrayMove(todos, activeIndex, overIndex);
                 setTodos(newTodos);
             } else {
-                // Spostamento tra colonne diverse
-                const sourceTodo = todos.find(todo => todo.id === activeTodoId);
-                const destinationTodo = todos.find(todo => todo.id === overTodoId);
+                const activeTask = active.id.split('-');
+                const overTask = over.id.split('-');
 
-                const sourceIndex = sourceTodo.tasks.findIndex(task => task.id === activeTaskId);
-                const [movedTask] = sourceTodo.tasks.splice(sourceIndex, 1);
+                const activeTodoId = parseInt(activeTask[1]);
+                const activeTaskId = parseInt(activeTask[2]);
+                const overTodoId = parseInt(overTask[1]);
+                const overTaskId = parseInt(overTask[2]);
 
-                const targetIndex = destinationTodo.tasks.findIndex(task => task.id === overTaskId);
-                destinationTodo.tasks.splice(targetIndex, 0, movedTask);
+                if (activeTodoId === overTodoId) {
+                    // Spostamento all'interno della stessa colonna
+                    const todo = todos.find(todo => todo.id === activeTodoId);
+                    const activeIndex = todo.tasks.findIndex(task => task.id === activeTaskId);
+                    const overIndex = todo.tasks.findIndex(task => task.id === overTaskId);
+                    const newTasks = arrayMove(todo.tasks, activeIndex, overIndex);
+                    const newTodos = todos.map(todo => todo.id === activeTodoId ? { ...todo, tasks: newTasks } : todo);
+                    setTodos(newTodos);
+                } else {
+                    // Spostamento tra colonne diverse
+                    const sourceTodo = todos.find(todo => todo.id === activeTodoId);
+                    const destinationTodo = todos.find(todo => todo.id === overTodoId);
 
-                const newTodos = todos.map(todo => {
-                    if (todo.id === activeTodoId) {
-                        return { ...todo, tasks: sourceTodo.tasks };
-                    } else if (todo.id === overTodoId) {
-                        return { ...todo, tasks: destinationTodo.tasks };
-                    } else {
-                        return todo;
-                    }
-                });
-                setTodos(newTodos);
+                    const sourceIndex = sourceTodo.tasks.findIndex(task => task.id === activeTaskId);
+                    const [movedTask] = sourceTodo.tasks.splice(sourceIndex, 1);
+
+                    const targetIndex = destinationTodo.tasks.findIndex(task => task.id === overTaskId);
+                    destinationTodo.tasks.splice(targetIndex, 0, movedTask);
+
+                    const newTodos = todos.map(todo => {
+                        if (todo.id === activeTodoId) {
+                            return { ...todo, tasks: sourceTodo.tasks };
+                        } else if (todo.id === overTodoId) {
+                            return { ...todo, tasks: destinationTodo.tasks };
+                        } else {
+                            return todo;
+                        }
+                    });
+                    setTodos(newTodos);
+                }
             }
         }
     };
-
-
 
     // Funzione per aggiungere una nuova colonna
     const handleAddColumn = () => {
@@ -161,6 +178,13 @@ export default function Main() {
                         task={activeTask}
                         taskId={activeTask.id}
                         toDoId={activeTask.todoId}
+                        onDelete={() => { }}
+                        onModify={() => { }}
+                    />
+                ) : activeTodo ? (
+                    <TodoCard
+                        todo={activeTodo}
+                        onAdd={() => { }}
                         onDelete={() => { }}
                         onModify={() => { }}
                     />
