@@ -1,61 +1,61 @@
 import { useContext, useState } from 'react';
 import axios from "axios";
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { GlobalContext } from '../contexts/GlobalContext.jsx';
 
 // Components
 import DotsMenu from '../components/ui/DotsMenu.jsx';
 import RadioButton from './ui/RadioButton.jsx';
-import { notifySuccess } from './ui/Notify.jsx'
+import { notifySuccess } from './ui/Notify.jsx';
+import { ArrowsPointingOutIcon as DragIcon } from "@heroicons/react/20/solid";
 
-export default function TaskCard({ task, taskId, toDoId, onDelete, onModify, onDragStart, onDrop }) {
-
+export default function TaskCard({ task, taskId, toDoId, onDelete, onModify }) {
     const { description, priority } = task;
+    const { animationClass } = useContext(GlobalContext);
 
-    const { animationClass, setAnimationClass } = useContext(GlobalContext)
+    const [isHoveredTask, setIsHoveredTask] = useState(false); // Stato per gestire l'hover sulla task
+    const [completed, setCompleted] = useState(task.completed === 1 ? task.completed : ''); // Stato per gestire il completamento della task
+    const [isEditing, setIsEditing] = useState(false); // Stato per gestire la modalità di modifica della task
+    const [taskData, setTaskData] = useState({ description, priority }); // Stato per memorizzare i dati della task
 
-    // Stati
-    // Stato per gestire localmente l'hover di una task
-    const [isHoveredTask, setIsHoveredTask] = useState(false);
-    // Stato per gestire il completamente della task
-    const [completed, setCompleted] = useState(task.completed === 1 ? task.completed : '');
-    // Stato per gestire la modifica della task
-    const [isEditing, setIsEditing] = useState(false);
-    // Stato per settare i nuovi dati alla modifica (di default quelli del db)
-    const [taskData, setTaskData] = useState({ description, priority });
-
-    // Funzione per collegare i value del form di modifica con il loro stato
+    // Funzione per gestire il cambiamento dei dati della task
     const handleTaskDataChange = (e) => {
         const { name, value } = e.target;
         setTaskData({
             ...taskData,
             [name]: name === 'priority' ? parseInt(value) : value
         });
-    }
+    };
 
-    // Funzione per eseguire la modifica della task
+    // Funzione per modificare la task
     const modifyTask = async (e) => {
         e.preventDefault();
         try {
             await axios.patch(`http://localhost:3000/todos/${toDoId}/tasks/${taskId}`, taskData);
             onModify();
             setIsEditing(false);
-            notifySuccess('Task modified!')
+            notifySuccess('Task modified!');
         } catch (err) {
             console.error("Error modifying the task!", err);
         }
-    }
+    };
 
-    // Funzione per gestire la modifica al click del suo bottone
+    // Funzione per attivare la modalità di modifica della task
     const handleModifyClick = () => {
         setIsEditing(true);
     };
 
-    // Funzione per determinare la classe di colore in base alla priorità
+    // Funzione per annullare la modifica della task
+    const handleCancelClick = () => {
+        setIsEditing(false);
+    };
+
+    // Funzione per ottenere il colore della priorità
     const getPriorityColor = (priority) => {
         if (priority == null) {
             return 'bg-gray-200';
         }
-
         switch (priority) {
             case 1:
                 return 'bg-red-600';
@@ -68,55 +68,45 @@ export default function TaskCard({ task, taskId, toDoId, onDelete, onModify, onD
         }
     };
 
-    // Invoco la funzione e gli passo la priority che arriva dal DB
     const priorityColor = getPriorityColor(priority);
 
-    // Funzione di callback per aggiornare lo stato completed
+    // Funzione per gestire il cambiamento dello stato di completamento della task
     const handleCompletedChange = (newCompleted) => {
         setCompleted(newCompleted);
     };
 
-    // Funzione per annullare la modifica
-    const handleCancelClick = () => {
-        setIsEditing(false);
-    };
+    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: `task-${toDoId}-${taskId}` });
 
-    const handleDragStart = (e) => {
-        onDragStart(task, toDoId);
-    };
-
-    const handleDrop = (e) => {
-        e.preventDefault();
-        onDrop(toDoId, taskId);
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
     };
 
     return (
         <section
-            draggable
-            onDragStart={handleDragStart}
-            onDrop={handleDrop}
+            ref={setNodeRef}
+            style={style}
             className={`${isEditing && 'bg-gray-600'} flex flex-col bg-gray-200 rounded-lg text-gray-800 animate__animated animate__fadeInDown animate__faster`}
-            style={{ cursor: 'grab' }}
+            onMouseEnter={() => setIsHoveredTask(true)}
+            onMouseLeave={() => setIsHoveredTask(false)}
         >
-            <div className={`flex justify-end items-center px-3 py-1 ${priorityColor} rounded-t-lg`}>
-                <DotsMenu toDoId={toDoId} taskId={taskId} onDelete={onDelete} onModify={handleModifyClick} className='text-gray-900 hover:bg-gray-600 hover:opacity-60 hover:text-white' />
+            <div className={`flex justify-between items-center px-3 py-1 ${priorityColor} rounded-t-lg`}>
+                <div className="task-drag-area flex items-center">
+                    <div className="drag-handle cursor-grab" {...attributes} {...listeners}>
+                        <DragIcon className="h-4 w-4 text-gray-700" />
+                    </div>
+                </div>
+                <div>
+                    <DotsMenu toDoId={toDoId} taskId={taskId} onDelete={onDelete} onModify={handleModifyClick} className='text-gray-900 hover:bg-gray-600 hover:opacity-60 hover:text-white' />
+                </div>
             </div>
-            <div className='p-3 flex gap-2 items-center'
-                onMouseEnter={() => {
-                    setIsHoveredTask(true);
-                    setAnimationClass('animate__fadeInLeft');
-                }}
-                onMouseLeave={() => {
-                    setAnimationClass('animate__fadeOutLeft');
-                    setTimeout(() => setIsHoveredTask(false), 150); // Durata dell'animazione
-                }}
-            >
+            <div className='p-3 flex gap-2 items-center'>
                 {isHoveredTask && !isEditing && (
                     <RadioButton
                         checked={completed}
                         taskId={taskId}
                         toDoId={toDoId}
-                        className={`cursor-pointer animate__animated ${animationClass} radio_task_animation  min-h-4 min-w-4`}
+                        className={`cursor-pointer animate__animated ${animationClass} radio_task_animation min-h-4 min-w-4`}
                         onCompletedChange={handleCompletedChange}
                     />
                 )}

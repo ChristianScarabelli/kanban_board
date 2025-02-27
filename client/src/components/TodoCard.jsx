@@ -1,5 +1,7 @@
 import axios from "axios";
 import { useContext, useState } from "react";
+import { useDroppable } from '@dnd-kit/core';
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 // Components
 import AddTaskButton from "./ui/AddTaskButton";
@@ -8,17 +10,19 @@ import DotsMenu from "./ui/DotsMenu";
 import { GlobalContext } from "../contexts/GlobalContext";
 import { notifySuccess } from './ui/Notify.jsx'
 
-export default function TodoCard({ todo, onAdd, onDelete, onModify, onDragStart, onDrop }) {
+export default function TodoCard({ todo, onAdd, onDelete, onModify }) {
     const { animationClass, setAnimationClass } = useContext(GlobalContext);
 
-    const [isEditing, setIsEditing] = useState(false);
-    const [newTitle, setNewTitle] = useState(todo.title);
+    const [isEditing, setIsEditing] = useState(false); // Stato per gestire la modalità di modifica del titolo
+    const [newTitle, setNewTitle] = useState(todo.title); // Stato per memorizzare il nuovo titolo
 
+    // Funzione per attivare la modalità di modifica del titolo
     const handleModify = () => {
         setIsEditing(true);
         setAnimationClass('animate__bounceInDown');
     };
 
+    // Funzione per modificare il titolo del todo
     const modifyTitle = async (e) => {
         e.preventDefault();
         try {
@@ -31,14 +35,9 @@ export default function TodoCard({ todo, onAdd, onDelete, onModify, onDragStart,
         }
     };
 
-    const handleDragOver = (e) => {
-        e.preventDefault();
-    };
-
-    const handleDrop = (e, targetTaskId) => {
-        e.preventDefault();
-        onDrop(todo.id, targetTaskId);
-    };
+    const { setNodeRef } = useDroppable({
+        id: `tasks-${todo.id}`,
+    });
 
     return (
         <section className="w-72 animate__animated animate__fadeInDown animate__faster">
@@ -65,19 +64,15 @@ export default function TodoCard({ todo, onAdd, onDelete, onModify, onDragStart,
                         <DotsMenu toDoId={todo.id} onDelete={onDelete} onModify={handleModify} className='text-gray-200 hover:bg-gray-600 hover:opacity-80' />
                     }
                 </div>
-                <div className="flex flex-col justify-start gap-3 overflow-y-auto max-h-110" onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, null)}>
-                    {todo.tasks && todo.tasks.map(task => (
-                        <TaskCard
-                            key={task.id}
-                            task={task}
-                            taskId={task.id}
-                            toDoId={todo.id}
-                            onDelete={onDelete}
-                            onModify={onModify}
-                            onDragStart={onDragStart}
-                            onDrop={handleDrop}
-                        />
-                    ))}
+                <div ref={setNodeRef} className="flex flex-col justify-start gap-3 overflow-y-auto max-h-110">
+                    <SortableContext
+                        items={todo.tasks.map(task => `task-${todo.id}-${task.id}`)}
+                        strategy={verticalListSortingStrategy}
+                    >
+                        {todo.tasks && todo.tasks.map(task => (
+                            <TaskCard key={task.id} task={task} taskId={task.id} toDoId={todo.id} onDelete={onDelete} onModify={onModify} />
+                        ))}
+                    </SortableContext>
                 </div>
                 <div className="mt-3">
                     <AddTaskButton columnId={todo.id} onAdd={onAdd} />
