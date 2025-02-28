@@ -16,7 +16,6 @@ router.put('/:id', todosController.update)
 // Destroy
 router.delete('/:id', todosController.destroy)
 
-
 // Task annidate per risorsa Taks
 // Store
 router.post('/:todo_id/tasks', tasksController.store)
