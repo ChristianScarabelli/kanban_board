@@ -49,12 +49,12 @@ export default function TodoCard({ todo, onAdd, onDelete, onModify }) {
     };
 
     return (
-        <section ref={setSortableNodeRef} style={style} className="w-72 animate__animated animate__fadeInDown animate__faster">
+        <section ref={setSortableNodeRef} style={style} className="w-72 ">
             <div className="flex flex-col justify-start p-3 rounded-lg bg-gray-800 text-gray-400 max-h-140 overflow-y-auto">
                 <div className="flex justify-between items-center mb-3">
                     <div className="flex items-center">
                         <div className="drag-handle cursor-grab" {...attributes} {...listeners}>
-                            <DragIcon className="h-4 w-4 text-gray-400" />
+                            <DragIcon className="h-4 w-4 text-gray-400 opacity-40" />
                         </div>
                         {isEditing ? (
                             <form onSubmit={modifyTitle} className={`${animationClass} flex flex-col w-full gap-3 animate__animated  todo_modify_form_animation`}>

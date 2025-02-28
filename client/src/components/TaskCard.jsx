@@ -86,14 +86,14 @@ export default function TaskCard({ task, taskId, toDoId, onDelete, onModify }) {
         <section
             ref={setNodeRef}
             style={style}
-            className={`${isEditing && 'bg-gray-600'} flex flex-col bg-gray-200 rounded-lg text-gray-800 animate__animated animate__fadeInDown animate__faster`}
+            className={`${isEditing && 'bg-gray-600'} flex flex-col bg-gray-200 rounded-lg text-gray-800`}
             onMouseEnter={() => setIsHoveredTask(true)}
             onMouseLeave={() => setIsHoveredTask(false)}
         >
             <div className={`flex justify-between items-center px-3 py-1 ${priorityColor} rounded-t-lg`}>
                 <div className="task-drag-area flex items-center">
                     <div className="drag-handle cursor-grab" {...attributes} {...listeners}>
-                        <DragIcon className="h-4 w-4 text-gray-700" />
+                        <DragIcon className="h-4 w-4 text-gray-700 opacity-40" />
                     </div>
                 </div>
                 <div>
